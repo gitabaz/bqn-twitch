@@ -17,35 +17,35 @@ and `Disconnect`.
 See `tb.bqn` for an example of usage.
 
 ## Functions
-`Connect 𝕩`
+### Connect 𝕩
 
     - 𝕩: ⟨username, user access token⟩
     - return: socket
 
-`𝕨 Join 𝕩`:
+### 𝕨 Join 𝕩
 
     - 𝕩: socket
     - 𝕨: channel to join
     - return: socket
   
-`𝕨 Read 𝕩`:
+### 𝕨 Read 𝕩
 
     - 𝕩: socket
     - 𝕨: string buffer to read input
     - return: string read
   
-`𝕨 ReadFullMsgs 𝕩`:
+### 𝕨 ReadFullMsgs 𝕩`
 
     - 𝕩: string from a Read call
     - 𝕨: left over partial message from a previous ReadFullMsgs call
     - return: ⟨list of full messages, left over partial message⟩
   
-`𝕨 SendChannelMsg 𝕩`:
+### 𝕨 SendChannelMsg 𝕩
 
     - 𝕩: socket
     - 𝕨: ⟨channel, message⟩
     - return: socket
   
-`Disconnect 𝕩`:
+### Disconnect 𝕩
 
     - 𝕩: socket
