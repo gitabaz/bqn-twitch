@@ -34,7 +34,7 @@ See `tb.bqn` for an example of usage.
     - 𝕨: string buffer to read input
     - return: string read
   
-### 𝕨 ReadFullMsgs 𝕩`
+### 𝕨 ReadFullMsgs 𝕩
 
     - 𝕩: string from a Read call
     - 𝕨: left over partial message from a previous ReadFullMsgs call
