@@ -5,8 +5,6 @@ crlf ← @+13‿10
 url ← "irc.chat.twitch.tv"
 port ← "6667"
 
-cap_req ← "CAP REQ :twitch.tv/membership twitch.tv/tags twitch.tv/commands"∾crlf
-
 Send ⇐ { 
   bytes_sent ← ssw.Send 𝕩‿𝕨‿(≠𝕨) 
   ! bytes_sent > 0
@@ -37,6 +35,11 @@ Disconnect ⇐ ssw.DestroyStream
 
 Join ⇐ {
   ("JOIN "∾𝕨∾crlf) Send 𝕩
+}
+
+RequestCap ⇐ {
+  c ← crlf∾˜"CAP REQ :"∾∾⟜" "⊸∾´"twitch.tv/"⊸∾¨𝕨
+  c Send 𝕩
 }
 
 SendChannelMsg ⇐ {

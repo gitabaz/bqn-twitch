@@ -11,8 +11,8 @@ make
 ```
 
 To use the library in BQN simply import `bqn-twitch`. Basic functionality
-revolves around `Connect`, `Join`, `Read`, `ReadFullMsgs`, `SendChannelMsg`,
-and `Disconnect`.
+revolves around `Connect`, `RequestCap`, `Join`, `Read`, `ReadFullMsgs`,
+`SendChannelMsg`, and `Disconnect`.
 
 See `tb.bqn` for an example of usage.
 
@@ -20,6 +20,12 @@ See `tb.bqn` for an example of usage.
 ### Connect 𝕩
 
     - 𝕩: ⟨username, user access token⟩
+    - return: socket
+
+### 𝕨 RequestCap 𝕩
+
+    - 𝕩: socket
+    - 𝕨: list of capabilities (membership, tags, commands)
     - return: socket
 
 ### 𝕨 Join 𝕩
