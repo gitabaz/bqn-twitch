@@ -54,6 +54,25 @@ ReadFullMsgs ⇐ {
   dlm(↓⋈∾∘↑)m # return list of full messages and partial message
 }
 
+HandlePing ⇐ {
+  ("PONG :"∾𝕨∾crlf) Send 𝕩
+}
+
+HandlePrivMsg ⇐ {
+  •Out "<"∾(⊑"!" SplitStr 1⊑𝕨)∾"> "∾(2⊑𝕨)
+  𝕩
+}
+
+HandleMsg ⇐ {
+  p ← ":" SplitStr 𝕨 # split messages on : to get pieces
+  𝕨 {
+    "PING "≡⊑p ? (¯1⊑p) HandlePing 𝕩; # if ping message reply pong
+    "PRIVMSG" ≡ 1⊑" "SplitStr 1⊑p ? p HandlePrivMsg 𝕩;
+    •Show 𝕨
+  } 𝕩
+  𝕩
+}
+
 #########
 # Utils #
 #########
