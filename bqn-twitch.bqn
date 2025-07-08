@@ -49,8 +49,7 @@ SendChannelMsg ⇐ {
 
 ReadFullMsgs ⇐ {
   r ← 𝕨∾𝕩 # concat last partial message (𝕨) with new messages (𝕩)
-  m ← r⊔˜(+`∧¬)⊸-+´r⊸=¨crlf # split on crlf
-  m ↩ ×∘≠¨⊸/ m # remove empty lists
+  m ← ×∘≠¨⊸/ crlf SplitStr r # split on crlf and remove empty lists
   dlm ← -(@+10)≠¯1⊑r # drop last message if it doesn't end in nl
   dlm(↓⋈∾∘↑)m # return list of full messages and partial message
 }
@@ -58,6 +57,10 @@ ReadFullMsgs ⇐ {
 #########
 # Utils #
 #########
+
+SplitStr ⇐ {
+  𝕩⊔˜(+`∧¬)⊸-+´𝕩⊸=¨ 𝕨 # split 𝕩 on 𝕨
+}
 
 StrFromPtr ⇐ {
   @ + 𝕩.Read¨ ↕ ssw.StrLen 𝕩
