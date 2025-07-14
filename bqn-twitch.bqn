@@ -59,20 +59,51 @@ HandlePing ⇐ {
   ("PONG :"∾𝕨∾crlf) Send 𝕩
 }
 
-HandlePrivMsg ⇐ {
-  •Out "<"∾(⊑"!" SplitStr 1⊑𝕨)∾"> "∾(2⊑𝕨)
+PrintPrivMsg ⇐ {
+  u‿c‿ts←{⥊/⟜𝕩˘(+´¨("display-name="‿"color="‿"tmi-sent-ts=")⍷⌜𝕩)}";" SplitStr 𝕩.t # get display name, color, and timestamp from tags
+  u (1⊸⊑"="⊸SplitStr)↩
+  ts↩ 1↓∾(':'∾«⟜"00"∘•Fmt)¨ utc TimeFromEpoch 1000÷˜•ParseFloat 1⊑"="SplitStr ts # parse time and fmt hh:mm:ss
+  c↩ Hex2RGB 1↓1⊸=∘≠◶⟨"#FF0000",⊑⟩ 1↓"=" SplitStr c
+  m←(1⊸+∘⊑∘/∘(':'⊸=)↓↕∘≠)⊸⊏𝕩.p
+  •Out ts∾" "∾(c Colorize u)∾": "∾m
+     #(⊑∘/∘('!'⊸=)↑↕∘≠)⊸⊏mm.s
   𝕩
 }
 
 HandleMsg ⇐ {
-  p ← ":" SplitStr 𝕨 # split messages on : to get pieces
-  𝕨 {
-    "PING "≡⊑p ? (¯1⊑p) HandlePing 𝕩; # if ping message reply pong
-    "PRIVMSG" ≡ 1⊑" "SplitStr 1⊑p ? p HandlePrivMsg 𝕩;
-    •Show 𝕨
-  } 𝕩
+  #{⊑/𝕩.c⊸≡¨"PING"‿"PRIVMSG"}◶⟨
+  #  𝕩.p HandlePing 𝕨
+  #  𝕩 HandlePrivMsg 𝕨
+  #  ⟩𝕩
+  "PING" ≡ 𝕩.c ? 𝕩 HandlePing 𝕨; # if ping message reply pong
+  "PRIVMSG" ≡ 𝕩.c ? PrintPrivMsg 𝕩;
+  •Out 𝕩.c∾" "∾𝕩.p
   𝕩
 }
+
+ParseMsg ⇐ {
+  # parse message into its tag, source, command, parameters
+  pt←" " SplitStr 𝕩
+  t‿s‿c‿p ← ⟨⟩‿⟨⟩‿⟨⟩‿⟨⟩
+  { '@'=⊑⊑pt ? t↩⊑pt ⋄ pt 1⊸↓↩;@}
+  { ':'=⊑⊑pt ? s↩⊑pt ⋄ pt 1⊸↓↩;@}
+  c↩⊑pt ⋄ pt 1⊸↓↩
+  p↩∾⟜" "⊸∾´pt
+  t‿s‿c‿p
+}
+
+Msg ⇐ {
+  t‿s‿c‿p ⇐ ⟨⟩‿⟨⟩‿⟨⟩‿⟨⟩
+  Parse ⇐ { # parse message into its tag, source, command, parameters
+    pt←" " SplitStr 𝕩
+    { '@'=⊑⊑pt ? t↩⊑pt ⋄ pt 1⊸↓↩;@}
+    { ':'=⊑⊑pt ? s↩⊑pt ⋄ pt 1⊸↓↩;@}
+    c↩⊑pt ⋄ pt 1⊸↓↩
+    p↩∾⟜" "⊸∾´pt
+  }
+  Parse 𝕩
+}
+
 
 #########
 # Utils #
