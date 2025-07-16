@@ -59,18 +59,33 @@ HandlePing ⇐ {
   ("PONG "∾𝕨.p∾crlf) Send 𝕩
 }
 
-PrintPrivMsg ⇐ {
-  u‿c‿ts←{(1⊸↓"="⊸SplitStr)¨ ⥊/⟜𝕩˘(+´¨("display-name="‿"color="‿"tmi-sent-ts=")⍷⌜𝕩)}";" SplitStr 𝕩.t # get display name, color, and timestamp from tags
+HandlePrivMsg ⇐ {
+  u‿c‿ts←{(1⊸↓"="⊸SplitStr)¨ ⥊/⟜𝕩˘(+´¨("display-name="‿"color="‿"tmi-sent-ts=")⍷⌜𝕩)}";" SplitStr 𝕨.t # get display name, color, and timestamp from tags
+  u⊑↩
   ts↩ 1↓∾(':'∾«⟜"00"∘•Fmt)¨ utc TimeFromEpoch 1000÷˜•ParseFloat ⊑ts # parse time and fmt hh:mm:ss
   c↩ Hex2RGB 1↓1⊸=∘≠◶⟨"#FF0000",⊑⟩c # parse color string or default to red if missing
-  m←(1⊸+∘⊑∘/∘(':'⊸=)↓↕∘≠)⊸⊏𝕩.p # msg is everything after the first ':'
-  •Out ts∾" "∾(c Colorize ⊑u)∾": "∾m
+  m←(1⊸+∘⊑∘/∘(':'⊸=)↓↕∘≠)⊸⊏𝕨.p # msg is everything after the first ':'
+  ch ← ⊑" " SplitStr 𝕨.p # channel is everything before the first ' '
+
+  PrintPrivMsg u‿c‿ts‿m
+  '!'=⊑m ? ch‿u‿m HandleCmd 𝕩;@
+}
+
+PrintPrivMsg ⇐ {
+  u‿c‿ts‿m ← 𝕩
+  •Out ts∾" "∾(c Colorize u)∾": "∾m
 }
 
 HandleMsg ⇐ {
   "PING" ≡ 𝕨.c ? 𝕨 HandlePing 𝕩; # if ping message reply pong
-  "PRIVMSG" ≡ 𝕨.c ? PrintPrivMsg 𝕨;
+  "PRIVMSG" ≡ 𝕨.c ? 𝕨 HandlePrivMsg 𝕩;
   •Out 𝕨.c∾" "∾𝕨.p
+}
+
+HandleCmd ⇐ {
+  ch‿u‿m ← 𝕨
+  cmd ← ⊑" " SplitStr m
+  "!hello" ≡ cmd ? ch‿("hi @"∾u∾crlf) SendChannelMsg 𝕩;@
 }
 
 Msg ⇐ {
