@@ -4,7 +4,7 @@ tc ← •Import "bqn-twitch.bqn"
 
 usn ← "olab0t"
 uat ← tc.GetEnvVar "OLAB0T_USER_ACCESS_TOKEN"
-ch ← "#olabaz"
+ch ← "#chess"
 cap ← "membership"‿"tags"‿"commands"
 
 # buffers
