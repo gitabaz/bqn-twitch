@@ -96,8 +96,8 @@ See `tb.bqn` for a working example of usage.
 
 ### GetEnvVar 𝕩
 
-    > [!CAUTION]
-    > May segfault if environment variable does not exist
+> [!CAUTION]
+> May segfault if environment variable does not exist
 
     - 𝕩: string containing environment variable name
     - return: string containing environment variable value
