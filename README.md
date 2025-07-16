@@ -1,6 +1,8 @@
 # bqn-twitch
 A simple library for building a basic twitch bot in BQN.
 
+[![asciicast](https://asciinema.org/a/ovXfsYy4khtlcOqhTlvmoWrMJ.svg)](https://asciinema.org/a/ovXfsYy4khtlcOqhTlvmoWrMJ)
+
 ## Getting started
 This library relies on a C library as a simple socket wrapper (ssw) for POSIX
 sockets that handle the connection to the twitch IRC server. It currently only
