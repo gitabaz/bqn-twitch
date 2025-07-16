@@ -66,30 +66,14 @@ PrintPrivMsg ⇐ {
   c↩ Hex2RGB 1↓1⊸=∘≠◶⟨"#FF0000",⊑⟩ 1↓"=" SplitStr c
   m←(1⊸+∘⊑∘/∘(':'⊸=)↓↕∘≠)⊸⊏𝕩.p
   •Out ts∾" "∾(c Colorize u)∾": "∾m
-     #(⊑∘/∘('!'⊸=)↑↕∘≠)⊸⊏mm.s
   𝕩
 }
 
 HandleMsg ⇐ {
-  #{⊑/𝕩.c⊸≡¨"PING"‿"PRIVMSG"}◶⟨
-  #  𝕩.p HandlePing 𝕨
-  #  𝕩 HandlePrivMsg 𝕨
-  #  ⟩𝕩
   "PING" ≡ 𝕩.c ? 𝕩 HandlePing 𝕨; # if ping message reply pong
   "PRIVMSG" ≡ 𝕩.c ? PrintPrivMsg 𝕩;
   •Out 𝕩.c∾" "∾𝕩.p
   𝕩
-}
-
-ParseMsg ⇐ {
-  # parse message into its tag, source, command, parameters
-  pt←" " SplitStr 𝕩
-  t‿s‿c‿p ← ⟨⟩‿⟨⟩‿⟨⟩‿⟨⟩
-  { '@'=⊑⊑pt ? t↩⊑pt ⋄ pt 1⊸↓↩;@}
-  { ':'=⊑⊑pt ? s↩⊑pt ⋄ pt 1⊸↓↩;@}
-  c↩⊑pt ⋄ pt 1⊸↓↩
-  p↩∾⟜" "⊸∾´pt
-  t‿s‿c‿p
 }
 
 Msg ⇐ {
