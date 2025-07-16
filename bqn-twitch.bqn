@@ -56,7 +56,7 @@ ReadFullMsgs ⇐ {
 }
 
 HandlePing ⇐ {
-  ("PONG :"∾𝕨∾crlf) Send 𝕩
+  ("PONG "∾𝕨.p∾crlf) Send 𝕩
 }
 
 PrintPrivMsg ⇐ {
