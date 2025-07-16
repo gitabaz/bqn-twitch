@@ -60,7 +60,7 @@ HandlePing ⇐ {
 }
 
 HandlePrivMsg ⇐ {
-  u‿c‿ts←{(1⊸↓"="⊸SplitStr)¨ ⥊/⟜𝕩˘(+´¨("display-name="‿"color="‿"tmi-sent-ts=")⍷⌜𝕩)}";" SplitStr 𝕨.t # get display name, color, and timestamp from tags
+  u‿c‿ts←{(1⊸↓"="⊸SplitStr)¨(⊑∘/˘+´¨("display-name="‿"color="‿"tmi-sent-ts=")⍷⌜𝕩)⊏𝕩}";" SplitStr 𝕨.t # get display name, color, and timestamp from tags
   u⊑↩
   ts↩ 1↓∾(':'∾«⟜"00"∘•Fmt)¨ utc TimeFromEpoch 1000÷˜•ParseFloat ⊑ts # parse time and fmt hh:mm:ss
   c↩ Hex2RGB 1↓1⊸=∘≠◶⟨"#FF0000",⊑⟩c # parse color string or default to red if missing
