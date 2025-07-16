@@ -60,20 +60,17 @@ HandlePing ⇐ {
 }
 
 PrintPrivMsg ⇐ {
-  u‿c‿ts←{⥊/⟜𝕩˘(+´¨("display-name="‿"color="‿"tmi-sent-ts=")⍷⌜𝕩)}";" SplitStr 𝕩.t # get display name, color, and timestamp from tags
-  u (1⊸⊑"="⊸SplitStr)↩
-  ts↩ 1↓∾(':'∾«⟜"00"∘•Fmt)¨ utc TimeFromEpoch 1000÷˜•ParseFloat 1⊑"="SplitStr ts # parse time and fmt hh:mm:ss
-  c↩ Hex2RGB 1↓1⊸=∘≠◶⟨"#FF0000",⊑⟩ 1↓"=" SplitStr c
-  m←(1⊸+∘⊑∘/∘(':'⊸=)↓↕∘≠)⊸⊏𝕩.p
-  •Out ts∾" "∾(c Colorize u)∾": "∾m
-  𝕩
+  u‿c‿ts←{(1⊸↓"="⊸SplitStr)¨ ⥊/⟜𝕩˘(+´¨("display-name="‿"color="‿"tmi-sent-ts=")⍷⌜𝕩)}";" SplitStr 𝕩.t # get display name, color, and timestamp from tags
+  ts↩ 1↓∾(':'∾«⟜"00"∘•Fmt)¨ utc TimeFromEpoch 1000÷˜•ParseFloat ⊑ts # parse time and fmt hh:mm:ss
+  c↩ Hex2RGB 1↓1⊸=∘≠◶⟨"#FF0000",⊑⟩c # parse color string or default to red if missing
+  m←(1⊸+∘⊑∘/∘(':'⊸=)↓↕∘≠)⊸⊏𝕩.p # msg is everything after the first ':'
+  •Out ts∾" "∾(c Colorize ⊑u)∾": "∾m
 }
 
 HandleMsg ⇐ {
-  "PING" ≡ 𝕩.c ? 𝕩 HandlePing 𝕨; # if ping message reply pong
-  "PRIVMSG" ≡ 𝕩.c ? PrintPrivMsg 𝕩;
-  •Out 𝕩.c∾" "∾𝕩.p
-  𝕩
+  "PING" ≡ 𝕨.c ? 𝕨 HandlePing 𝕩; # if ping message reply pong
+  "PRIVMSG" ≡ 𝕨.c ? PrintPrivMsg 𝕨;
+  •Out 𝕨.c∾" "∾𝕨.p
 }
 
 Msg ⇐ {

@@ -16,8 +16,7 @@ s ← ch tc.Join cap tc.RequestCap tc.Connect usn‿uat
 
 MainLoop ← {
   fm‿lo ↩ lo tc.ReadFullMsgs c tc.Read 𝕩
-  #tc.HandleMsg⟜𝕩¨ fm
-  𝕩⊸tc.HandleMsg¨tc.Msg¨ fm
+  tc.HandleMsg⟜𝕩∘tc.Msg¨ fm
   𝕩
 }
 
