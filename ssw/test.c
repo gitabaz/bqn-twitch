@@ -26,7 +26,7 @@ int main() {
     bytes_recv = ssw_read(s, buf, 512);
     printf("bytes: %zu\n%s", bytes_recv, buf);
 
-    const char *join = "JOIN #olabaz\n";
+    const char *join = "JOIN #chess\n";
     bytes_sent = ssw_send(s, join, strlen(join));
 
     bytes_recv = ssw_read(s, buf, 512);
